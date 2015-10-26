@@ -27,11 +27,118 @@ public class VerCarrito extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtDatos = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jlIcon = new javax.swing.JLabel();
+        jbExit = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jtDatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jtDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtDatosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtDatos);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 560, 120));
+
+        jButton1.setText("Finalizar la Compra ");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, -1, -1));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Imagen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
+        jPanel2.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addComponent(jlIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(418, 418, 418)
+                .addComponent(jlIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 170, 220, 170));
+
+        jbExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/salir.png"))); // NOI18N
+        jbExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExitActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, -1, -1));
+
+        jButton2.setText("Elegir más Productos");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
+
+        jLabel6.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 400));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jtDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDatosMouseClicked
+
+        //        Obtenemos el nomero de la columna seleccionada y sus valores respectivos
+        int num = jtDatos.getSelectedRow();
+
+        int id = (int)jtDatos.getValueAt(num, 0);
+        String nombre = (String) jtDatos.getValueAt(num, 1);
+        String descripcion = (String)jtDatos.getValueAt(num, 2);
+        long existencias = (long)jtDatos.getValueAt(num, 3);
+
+        //        Los agregamos a los textFields
+
+        //        Aqui leemos la imagen y la asigamos jLabel
+        //Image imge = createImage(new ByteArrayImageSource(this.jlIcon));
+        // Obtenemos la escala del jlabel y al final le asignamos el icono.
+        // Image scaledInstance = imge.getScaledInstance(jlIcon.getWidth()-100, jlIcon.getHeight()-100, Image.SCALE_DEFAULT);
+        //ImageIcon imageIcon = new ImageIcon(scaledInstance);
+        //jlIcon.setIcon(imageIcon);
+
+        //        InputStream in = new ByteArrayInputStream(img);
+        //
+        //        try {
+            //            BufferedImage imas = ImageIO.read(in);
+            //            ImageIO.write(imas, "jpg", new File("/home/javier/darksouls.jpg"));
+            ////            Icon icon = null;
+            ////            Graphics2D g2d = imas.createGraphics();
+            ////            icon.paintIcon(null, g2d, 0, 0);
+            //            jlIcon.setIcon((Icon)imas);
+            //        } catch (IOException ex) {
+            //            Logger.getLogger(ViewCatalogo.class.getName()).log(Level.SEVERE, null, ex);
+            //        }
+    }//GEN-LAST:event_jtDatosMouseClicked
+
+    private void jbExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExitActionPerformed
+        new ClientePrincipal().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jbExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -69,5 +176,13 @@ public class VerCarrito extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbExit;
+    private javax.swing.JLabel jlIcon;
+    private javax.swing.JTable jtDatos;
     // End of variables declaration//GEN-END:variables
 }
