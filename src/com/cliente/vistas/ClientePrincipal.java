@@ -166,7 +166,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
     private void jbViewCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbViewCatActionPerformed
         try {
-            //new ViewCatalogo().setVisible(true);
+            new VerCarrito().setVisible(true);
             this.dispose();
         } catch (Exception ex) {
             //Logger.getLogger(PrincipalServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,7 +174,8 @@ public class ClientePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbViewCatActionPerformed
 
     private void jbTransmitirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTransmitirActionPerformed
-
+        new VerTicket().setVisible(true);
+            this.dispose();
     }//GEN-LAST:event_jbTransmitirActionPerformed
 
     /**
