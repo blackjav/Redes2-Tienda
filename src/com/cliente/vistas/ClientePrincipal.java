@@ -5,16 +5,20 @@
  */
 package com.cliente.vistas;
 
+import com.cliente.controler.clientesock;
 import com.server.vistas.AddCatalogos;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author mariana
  */
 public class ClientePrincipal extends javax.swing.JFrame {
-
+    public static Object jbConnect;
+    private clientesock service = null;
+    private boolean flag = true;
     /**
      * Creates new form ClientePrincipal
      */
@@ -23,6 +27,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Cliente Principal");
+        jTextip.setText("localhost");
     }
 
     /**
@@ -36,11 +41,11 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jbaddCat = new javax.swing.JButton();
+        jbaddCatalogo = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jbViewCat = new javax.swing.JButton();
-        jbTransmitir = new javax.swing.JButton();
+        jbViewCaarrito = new javax.swing.JButton();
+        jbtiket = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextip = new javax.swing.JTextField();
@@ -57,16 +62,18 @@ public class ClientePrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 5, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setEnabled(false);
         jPanel1.setOpaque(false);
 
-        jbaddCat.setBackground(new java.awt.Color(255, 255, 255));
-        jbaddCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/compra.png"))); // NOI18N
-        jbaddCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbaddCat.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jbaddCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jbaddCat.addActionListener(new java.awt.event.ActionListener() {
+        jbaddCatalogo.setBackground(new java.awt.Color(255, 255, 255));
+        jbaddCatalogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/compra.png"))); // NOI18N
+        jbaddCatalogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbaddCatalogo.setEnabled(false);
+        jbaddCatalogo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jbaddCatalogo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jbaddCatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbaddCatActionPerformed(evt);
+                jbaddCatalogoActionPerformed(evt);
             }
         });
 
@@ -78,19 +85,21 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ver Carrito");
 
-        jbViewCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carrito.redimensionado.png"))); // NOI18N
-        jbViewCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbViewCat.addActionListener(new java.awt.event.ActionListener() {
+        jbViewCaarrito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carrito.redimensionado.png"))); // NOI18N
+        jbViewCaarrito.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbViewCaarrito.setEnabled(false);
+        jbViewCaarrito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbViewCatActionPerformed(evt);
+                jbViewCaarritoActionPerformed(evt);
             }
         });
 
-        jbTransmitir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ticket.redimensionado.png"))); // NOI18N
-        jbTransmitir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbTransmitir.addActionListener(new java.awt.event.ActionListener() {
+        jbtiket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ticket.redimensionado.png"))); // NOI18N
+        jbtiket.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbtiket.setEnabled(false);
+        jbtiket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbTransmitirActionPerformed(evt);
+                jbtiketActionPerformed(evt);
             }
         });
 
@@ -105,19 +114,19 @@ public class ClientePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jbaddCat)
+                    .addComponent(jbaddCatalogo)
                     .addComponent(jLabel2))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbViewCat)
+                        .addComponent(jbViewCaarrito)
                         .addGap(46, 46, 46))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbTransmitir, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtiket, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel4)))
@@ -128,11 +137,11 @@ public class ClientePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jbaddCat)
+                    .addComponent(jbaddCatalogo)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jbTransmitir, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbViewCat))
+                            .addComponent(jbtiket, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbViewCaarrito))
                         .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,27 +182,65 @@ public class ClientePrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbaddCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbaddCatActionPerformed
+    private void jbaddCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbaddCatalogoActionPerformed
             new Compracliente().setVisible(true);       
         this.dispose();
-    }//GEN-LAST:event_jbaddCatActionPerformed
+    }//GEN-LAST:event_jbaddCatalogoActionPerformed
 
-    private void jbViewCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbViewCatActionPerformed
+    private void jbViewCaarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbViewCaarritoActionPerformed
         try {
             new VerCarrito().setVisible(true);
             this.dispose();
         } catch (Exception ex) {
             //Logger.getLogger(PrincipalServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jbViewCatActionPerformed
+    }//GEN-LAST:event_jbViewCaarritoActionPerformed
 
-    private void jbTransmitirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTransmitirActionPerformed
+    private void jbtiketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtiketActionPerformed
         new VerTicket().setVisible(true);
             this.dispose();
-    }//GEN-LAST:event_jbTransmitirActionPerformed
+    }//GEN-LAST:event_jbtiketActionPerformed
 
     private void jbuconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuconectarActionPerformed
-        // TODO add your handling code here:
+       String mensaje = jTextip.getText();
+        String type = jbuconectar.getText();
+        
+        if(flag)
+        {    
+            if(!mensaje.isEmpty())
+            {
+                try
+                {
+//                    SOlo establecemos la conexion con el servidor
+                    this.service = new clientesock(mensaje);
+                    //service.start();
+                    jTextip.setEditable(false);
+//                    jbConnect.setText("Cerrar Sesión");
+                    jbViewCaarrito.setEnabled(true);
+                    jbaddCatalogo.setEnabled(true);
+                    jbtiket.setEnabled(true);
+                    this.flag = false; 
+                }
+                catch(Exception e)
+                {
+                    JOptionPane.showMessageDialog(this, "No se ha encontrado servicio ", "Error de conexion", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }    
+            else
+                JOptionPane.showMessageDialog(this, "Usted no ha ingresado una Ip  ", "Error de conexion", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+//            Esto nucna jalo 
+            this.service.desconectar();
+            jTextip.setEditable(true);
+//            jbConnect.setText("Conectar");
+            jbViewCaarrito.setEnabled(false);
+            jbaddCatalogo.setEnabled(false);
+            jbtiket.setEnabled(false);
+            this.flag = true;
+        }
     }//GEN-LAST:event_jbuconectarActionPerformed
 
     /**
@@ -243,9 +290,9 @@ public class ClientePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextip;
-    private javax.swing.JButton jbTransmitir;
-    private javax.swing.JButton jbViewCat;
-    private javax.swing.JButton jbaddCat;
+    private javax.swing.JButton jbViewCaarrito;
+    private javax.swing.JButton jbaddCatalogo;
+    private javax.swing.JButton jbtiket;
     private javax.swing.JButton jbuconectar;
     // End of variables declaration//GEN-END:variables
 }
