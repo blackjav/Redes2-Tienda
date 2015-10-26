@@ -42,6 +42,9 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jbViewCat = new javax.swing.JButton();
         jbTransmitir = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextip = new javax.swing.JTextField();
+        jbuconectar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -61,7 +64,6 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jbaddCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jbaddCat.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jbaddCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jbaddCat.setOpaque(false);
         jbaddCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbaddCatActionPerformed(evt);
@@ -78,7 +80,6 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
         jbViewCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carrito.redimensionado.png"))); // NOI18N
         jbViewCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbViewCat.setOpaque(false);
         jbViewCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbViewCatActionPerformed(evt);
@@ -87,7 +88,6 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
         jbTransmitir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ticket.redimensionado.png"))); // NOI18N
         jbTransmitir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbTransmitir.setOpaque(false);
         jbTransmitir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbTransmitirActionPerformed(evt);
@@ -144,6 +144,20 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Conectar a:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
+        getContentPane().add(jTextip, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 0, 160, -1));
+
+        jbuconectar.setText("Conectar");
+        jbuconectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbuconectarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbuconectar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, -1, -1));
+
         jLabel5.setBackground(new java.awt.Color(51, 51, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 330));
@@ -177,6 +191,10 @@ public class ClientePrincipal extends javax.swing.JFrame {
         new VerTicket().setVisible(true);
             this.dispose();
     }//GEN-LAST:event_jbTransmitirActionPerformed
+
+    private void jbuconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuconectarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbuconectarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,12 +237,15 @@ public class ClientePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextip;
     private javax.swing.JButton jbTransmitir;
     private javax.swing.JButton jbViewCat;
     private javax.swing.JButton jbaddCat;
+    private javax.swing.JButton jbuconectar;
     // End of variables declaration//GEN-END:variables
 }
