@@ -5,8 +5,14 @@
  */
 package com.cliente.vistas;
 
+import com.server.modelo.Catalogo;
+import com.server.modelo.dao.CatalogoDaoImpl;
 import java.awt.Image;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
 import sun.awt.image.ByteArrayImageSource;
 
 /**
@@ -14,12 +20,60 @@ import sun.awt.image.ByteArrayImageSource;
  * @author mariana
  */
 public class Compracliente extends javax.swing.JFrame {
-
+     private List lista;
+    private int idTem ;
+    private byte [] img = null;
+    
     /**
      * Creates new form Compracliente
      */
-    public Compracliente() {
+    public Compracliente() throws Exception {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Ver Catalogo");
+              
+//        Obtenemos el listado al cargar el frame
+        this.lista = new CatalogoDaoImpl().loadAll();
+        
+//        Creamos un modelo por defecto
+        DefaultTableModel modelo = new DefaultTableModel();
+        jtDatos.setModel(modelo);
+        
+//        Asigmanos el nombre de las columnas que tendra
+        modelo.addColumn("Identificador");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Existencias");
+        modelo.addColumn("imagen");
+        
+//        Recorremos la lista para obtener object de la lista y castear a tipo catalogo por ultimo asigna a la fila los datos
+        for (Object obj : lista)
+        {
+            Catalogo c = (Catalogo)obj;
+            Object o[] = new Object[5];
+            
+            o[0] = c.getId();
+            o[1] = c.getNombre();
+            o[2] = c.getDescripcion();
+            o[3] = c.getExitencias();
+            o[4] = c.getImg();
+            
+            modelo.addRow(o);
+            
+//            jtDatos.getse
+        }
+          
+//        Vamos a ocultar los campos de id y de la imagen para que no los vea el usuario pero nosotros los vamos a usar 
+        jtDatos.getColumnModel().getColumn(0).setMaxWidth(0);
+        jtDatos.getColumnModel().getColumn(0).setMinWidth(0);
+        jtDatos.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        jtDatos.getColumnModel().getColumn(4).setMaxWidth(0);
+        jtDatos.getColumnModel().getColumn(4).setMinWidth(0);
+        jtDatos.getColumnModel().getColumn(4).setPreferredWidth(0);
+        
+    
     }
 
     /**
@@ -45,7 +99,7 @@ public class Compracliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Imagen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Imagen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
         jPanel2.setOpaque(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -128,27 +182,14 @@ public class Compracliente extends javax.swing.JFrame {
         String descripcion = (String)jtDatos.getValueAt(num, 2);
         long existencias = (long)jtDatos.getValueAt(num, 3);
 
-        //        Los agregamos a los textFields
-       
-        //        Aqui leemos la imagen y la asigamos jLabel
-        //Image imge = createImage(new ByteArrayImageSource(this.jlIcon));
+        this.img = (byte[]) jtDatos.getValueAt(num, 4);
+        
+//        Aqui leemos la imagen y la asigamos jLabel 
+        Image imge = createImage(new ByteArrayImageSource(this.img));
         // Obtenemos la escala del jlabel y al final le asignamos el icono.
-       // Image scaledInstance = imge.getScaledInstance(jlIcon.getWidth()-100, jlIcon.getHeight()-100, Image.SCALE_DEFAULT);
-        //ImageIcon imageIcon = new ImageIcon(scaledInstance);
-        //jlIcon.setIcon(imageIcon);
-
-        //        InputStream in = new ByteArrayInputStream(img);
-        //
-        //        try {
-            //            BufferedImage imas = ImageIO.read(in);
-            //            ImageIO.write(imas, "jpg", new File("/home/javier/darksouls.jpg"));
-            ////            Icon icon = null;
-            ////            Graphics2D g2d = imas.createGraphics();
-            ////            icon.paintIcon(null, g2d, 0, 0);
-            //            jlIcon.setIcon((Icon)imas);
-            //        } catch (IOException ex) {
-            //            Logger.getLogger(ViewCatalogo.class.getName()).log(Level.SEVERE, null, ex);
-            //        }
+        Image scaledInstance = imge.getScaledInstance(jlIcon.getWidth()-100, jlIcon.getHeight()-100, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(scaledInstance);
+        jlIcon.setIcon(imageIcon);
 
     }//GEN-LAST:event_jtDatosMouseClicked
 
@@ -195,6 +236,40 @@ public class Compracliente extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+     public static void main(String args[]) {
+      // Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+        /* Create and display the form */
+       java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new Compracliente().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(Compracliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

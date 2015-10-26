@@ -183,7 +183,11 @@ public class ClientePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbaddCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbaddCatalogoActionPerformed
-            new Compracliente().setVisible(true);       
+        try {       
+            new Compracliente().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(ClientePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_jbaddCatalogoActionPerformed
 
