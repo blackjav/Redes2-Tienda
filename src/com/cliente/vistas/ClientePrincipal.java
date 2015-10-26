@@ -20,6 +20,9 @@ public class ClientePrincipal extends javax.swing.JFrame {
      */
     public ClientePrincipal() {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setTitle("Cliente Principal");
     }
 
     /**
@@ -40,6 +43,9 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jbTransmitir = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
@@ -55,6 +61,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jbaddCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jbaddCat.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jbaddCat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jbaddCat.setOpaque(false);
         jbaddCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbaddCatActionPerformed(evt);
@@ -71,6 +78,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
         jbViewCat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carrito.redimensionado.png"))); // NOI18N
         jbViewCat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbViewCat.setOpaque(false);
         jbViewCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbViewCatActionPerformed(evt);
@@ -79,6 +87,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
         jbTransmitir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ticket.redimensionado.png"))); // NOI18N
         jbTransmitir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbTransmitir.setOpaque(false);
         jbTransmitir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbTransmitirActionPerformed(evt);
@@ -133,11 +142,19 @@ public class ClientePrincipal extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
         jLabel5.setBackground(new java.awt.Color(51, 51, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 400));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 330));
+
+        jMenu1.setText("Archivo");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -201,6 +218,9 @@ public class ClientePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbTransmitir;
     private javax.swing.JButton jbViewCat;

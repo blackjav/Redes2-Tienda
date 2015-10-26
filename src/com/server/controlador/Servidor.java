@@ -43,13 +43,10 @@ public class Servidor extends Thread{
         this.PUERTO = port;
         this.server = new ServerSocket(PUERTO);
         JOptionPane.showMessageDialog(null, "Servidor is ready run !!", "alert", JOptionPane.INFORMATION_MESSAGE);
-        this.socket = server.accept();
-        this.entradaSocket = new InputStreamReader(socket.getInputStream());
-        this.salidaText = new PrintWriter(socket.getOutputStream(),true);
-        this.entradaText = new BufferedReader(entradaSocket); 
-        this.llegada = socket.getInputStream();
         
-        this.salidaObjeto = new ObjectOutputStream(socket.getOutputStream());
+        
+        
+//        this.salidaObjeto = new ObjectOutputStream(socket.getOutputStream());
         
     }
     
@@ -60,6 +57,9 @@ public class Servidor extends Thread{
         while(true)
         {
             try {
+                this.socket = server.accept();
+                this.salidaObjeto = new ObjectOutputStream(socket.getOutputStream());
+                this.entradaText = new BufferedReader(entradaSocket);
                 entradaText.readLine();
             } catch (IOException ex) {
                 Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,9 +70,10 @@ public class Servidor extends Thread{
     }
     
     public void send(toSend obj) throws IOException{
-        this.salidaObjeto = new ObjectOutputStream(socket.getOutputStream());
+        
         salidaObjeto.writeObject(obj);
-        salidaObjeto.close();
+        salidaObjeto.flush();
+//        salidaObjeto.close();
     }
     
     
