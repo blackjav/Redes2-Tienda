@@ -5,8 +5,7 @@
  */
 package com.cliente.vistas;
 
-import com.cliente.controler.clientesock;
-import com.server.vistas.AddCatalogos;
+import com.cliente.controlador.ClienteSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -17,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class ClientePrincipal extends javax.swing.JFrame {
     public static Object jbConnect;
-    private clientesock service = null;
+    private ClienteSocket service = null;
     private boolean flag = true;
     /**
      * Creates new form ClientePrincipal
@@ -50,6 +49,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextip = new javax.swing.JTextField();
         jbuconectar = new javax.swing.JButton();
+        txtPort = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -166,10 +166,11 @@ public class ClientePrincipal extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jbuconectar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, -1, -1));
+        getContentPane().add(txtPort, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, -1));
 
         jLabel5.setBackground(new java.awt.Color(51, 51, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 330));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 330));
 
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
@@ -206,8 +207,9 @@ public class ClientePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtiketActionPerformed
 
     private void jbuconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuconectarActionPerformed
-       String mensaje = jTextip.getText();
+        String mensaje = jTextip.getText();
         String type = jbuconectar.getText();
+        int puerto = Integer.parseInt(txtPort.getText());
         
         if(flag)
         {    
@@ -216,14 +218,15 @@ public class ClientePrincipal extends javax.swing.JFrame {
                 try
                 {
 //                    SOlo establecemos la conexion con el servidor
-                    this.service = new clientesock(mensaje);
-                    //service.start();
+                    this.service = new ClienteSocket(puerto,mensaje);
+//                    Object o = service.getLista();
                     jTextip.setEditable(false);
-//                    jbConnect.setText("Cerrar Sesión");
                     jbViewCaarrito.setEnabled(true);
                     jbaddCatalogo.setEnabled(true);
                     jbtiket.setEnabled(true);
                     this.flag = false; 
+                    
+                    
                 }
                 catch(Exception e)
                 {
@@ -237,7 +240,6 @@ public class ClientePrincipal extends javax.swing.JFrame {
         else
         {
 //            Esto nucna jalo 
-            this.service.desconectar();
             jTextip.setEditable(true);
 //            jbConnect.setText("Conectar");
             jbViewCaarrito.setEnabled(false);
@@ -298,5 +300,6 @@ public class ClientePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jbaddCatalogo;
     private javax.swing.JButton jbtiket;
     private javax.swing.JButton jbuconectar;
+    private javax.swing.JTextField txtPort;
     // End of variables declaration//GEN-END:variables
 }

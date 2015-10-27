@@ -70,7 +70,7 @@ public class Servidor extends Thread{
     }
     
     public void send(toSend obj) throws IOException{
-        
+//        salidaObjeto.
         salidaObjeto.writeObject(obj);
         salidaObjeto.flush();
 //        salidaObjeto.close();
