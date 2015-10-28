@@ -6,6 +6,7 @@
 package com.server.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,17 +15,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class toSend implements Serializable{
     
-    private DefaultTableModel modelo;
+    private List modelo;
 
-    public toSend(DefaultTableModel modelo) {
+    public toSend(List modelo) {
         this.modelo = modelo;
     }
 
-    public DefaultTableModel getModelo() {
+    public List getModelo() {
         return modelo;
     }
 
-    public void setModelo(DefaultTableModel modelo) {
+    public void setModelo(List modelo) {
         this.modelo = modelo;
     }
     

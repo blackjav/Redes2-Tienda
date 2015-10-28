@@ -5,10 +5,15 @@
  */
 package com.cliente.vistas;
 
+import com.cliente.controlador.Cambios;
 import com.cliente.controlador.ClienteSocket;
+import com.server.modelo.toSend;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,6 +23,8 @@ public class ClientePrincipal extends javax.swing.JFrame {
     public static Object jbConnect;
     private ClienteSocket service = null;
     private boolean flag = true;
+    public static List modelo;
+    public ArrayList <Cambios> NombreArrayList= null;
     /**
      * Creates new form ClientePrincipal
      */
@@ -50,6 +57,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
         jTextip = new javax.swing.JTextField();
         jbuconectar = new javax.swing.JButton();
         txtPort = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -168,6 +176,14 @@ public class ClientePrincipal extends javax.swing.JFrame {
         getContentPane().add(jbuconectar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, -1, -1));
         getContentPane().add(txtPort, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, -1));
 
+        jButton1.setText("Leer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, -1, -1));
+
         jLabel5.setBackground(new java.awt.Color(51, 51, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 330));
@@ -185,16 +201,16 @@ public class ClientePrincipal extends javax.swing.JFrame {
 
     private void jbaddCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbaddCatalogoActionPerformed
         try {       
-            new Compracliente().setVisible(true);
+            new Compracliente(modelo, service,null).setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(ClientePrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_jbaddCatalogoActionPerformed
 
     private void jbViewCaarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbViewCaarritoActionPerformed
         try {
-            new VerCarrito().setVisible(true);
+//            new VerCarrito().setVisible(true);
             this.dispose();
         } catch (Exception ex) {
             //Logger.getLogger(PrincipalServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,7 +218,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbViewCaarritoActionPerformed
 
     private void jbtiketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtiketActionPerformed
-        new VerTicket().setVisible(true);
+        new VerTicket().setVisible(true); 
             this.dispose();
     }//GEN-LAST:event_jbtiketActionPerformed
 
@@ -219,7 +235,10 @@ public class ClientePrincipal extends javax.swing.JFrame {
                 {
 //                    SOlo establecemos la conexion con el servidor
                     this.service = new ClienteSocket(puerto,mensaje);
-//                    Object o = service.getLista();
+                    service.start();
+                    
+                    
+                    
                     jTextip.setEditable(false);
                     jbViewCaarrito.setEnabled(true);
                     jbaddCatalogo.setEnabled(true);
@@ -230,7 +249,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
                 }
                 catch(Exception e)
                 {
-                    JOptionPane.showMessageDialog(this, "No se ha encontrado servicio ", "Error de conexion", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se ha encontrado servicio  " +e, "Error de conexion", JOptionPane.ERROR_MESSAGE);
                 }
                 
             }    
@@ -248,6 +267,15 @@ public class ClientePrincipal extends javax.swing.JFrame {
             this.flag = true;
         }
     }//GEN-LAST:event_jbuconectarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        Object o = service.getLista();
+        toSend llegada = (toSend)o;
+        this.modelo = llegada.getModelo();
+        System.out.println(modelo);
+//        entradaObjeto.close();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -285,6 +313,7 @@ public class ClientePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

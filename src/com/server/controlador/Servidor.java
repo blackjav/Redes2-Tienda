@@ -41,8 +41,8 @@ public class Servidor extends Thread{
     public Servidor(int port) throws IOException
     {
         this.PUERTO = port;
-        this.server = new ServerSocket(PUERTO);
-        JOptionPane.showMessageDialog(null, "Servidor is ready run !!", "alert", JOptionPane.INFORMATION_MESSAGE);
+        
+
         
         
         
@@ -53,26 +53,37 @@ public class Servidor extends Thread{
     @Override
     public void run() 
     {
-        
-        while(true)
-        {
-            try {
-                this.socket = server.accept();
-                this.salidaObjeto = new ObjectOutputStream(socket.getOutputStream());
-                this.entradaText = new BufferedReader(entradaSocket);
-                entradaText.readLine();
-            } catch (IOException ex) {
-                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            this.server = new ServerSocket(PUERTO);
+            JOptionPane.showMessageDialog(null, "Servidor is ready run !!", "alert", JOptionPane.INFORMATION_MESSAGE);
+            this.socket = server.accept();
+            this.entradaSocket = new InputStreamReader(socket.getInputStream());
+            this.entradaText = new BufferedReader(entradaSocket);
+            
+            JOptionPane.showMessageDialog(null, "Se detecto cliente", "alert", JOptionPane.INFORMATION_MESSAGE);
+            while(true)
+            {
+                try {
+                    this.entradaText = new BufferedReader(entradaSocket);
+                    entradaText.readLine();
+                } catch (IOException ex) {
+                    Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
-
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
                    
     }
     
     public void send(toSend obj) throws IOException{
 //        salidaObjeto.
-        salidaObjeto.writeObject(obj);
+        this.salidaObjeto = new ObjectOutputStream(socket.getOutputStream());
         salidaObjeto.flush();
+        salidaObjeto.writeObject(obj);
+        
 //        salidaObjeto.close();
     }
     

@@ -5,6 +5,8 @@
  */
 package com.cliente.controlador;
 
+import com.cliente.vistas.ClientePrincipal;
+import com.server.modelo.toSend;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,45 +36,40 @@ public class ClienteSocket  extends Thread{
     private ObjectInputStream entradaObjeto;
     private int PUERTO;
     private Object lista;
+    private String ip;
     
     public ClienteSocket(int port,String ip)
     {
         super("Cliente");
-        this.PUERTO = port;
-            try
-            {
-                this.socket= new Socket(ip,PUERTO);
-                out = new  ObjectOutputStream(socket.getOutputStream());
-//                this.salidaText = new PrintWriter(socket.getOutputStream(),true);
-                this.envio=new PrintStream(socket.getOutputStream()); 
-                this.entradaSocket = new InputStreamReader(socket.getInputStream());
-                this.entradaText = new BufferedReader(entradaSocket); 
-
-//                VentanaCliente.jbConnect.setText("Cerrar Sesión");
-//                System.out.println("Todo funcionando !!!!");
-            }catch(Exception e){
-                    JOptionPane.showMessageDialog(null, "No se ha podido establecer conexion \nVerifique la ip", "Error de conexion",JOptionPane.ERROR_MESSAGE);
-            }
-//            run();
+        
+            this.PUERTO = port;
+            this.ip = ip;
+            
+            
+        
+           
     }
     
     @Override
     public void run()
     {
-        String mensaje="";
-        int i =1;
        try {
+            this.socket= new Socket(this.ip,this.PUERTO);
+            out = new  ObjectOutputStream(socket.getOutputStream());
+            entradaObjeto = new ObjectInputStream(socket.getInputStream());
+            
             while(true)
             {
-                entradaObjeto = new ObjectInputStream(socket.getInputStream());
                 lista =entradaObjeto.readObject();
                 System.out.println("Entro "+lista);
-                entradaObjeto.close();
+                
                
             }
-        } catch (IOException | ClassNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, "No se ha podido establecer conexion ciere el programa", "Error de conexion", JOptionPane.ERROR_MESSAGE);
-           }
+        } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "No se ha podido establecer conexion ciere el programa aaa " + ex, "Error de conexion+ ", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Fallo");
+        }
         
     }
 

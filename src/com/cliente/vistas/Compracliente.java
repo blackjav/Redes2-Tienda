@@ -5,13 +5,15 @@
  */
 package com.cliente.vistas;
 
+import com.cliente.controlador.Cambios;
+import com.cliente.controlador.ClienteSocket;
 import com.server.modelo.Catalogo;
-import com.server.modelo.dao.CatalogoDaoImpl;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sun.awt.image.ByteArrayImageSource;
 
@@ -20,49 +22,54 @@ import sun.awt.image.ByteArrayImageSource;
  * @author mariana
  */
 public class Compracliente extends javax.swing.JFrame {
-     private List lista;
     private int idTem ;
     private byte [] img = null;
+    private List list;
+    private ClienteSocket service;
+    private List carrito = null;
+    private List cambios;
     
+    
+    public ArrayList <Cambios> NombreArrayList= null;
     /**
      * Creates new form Compracliente
+     * @param service
+     * @throws java.lang.Exception
      */
-    public Compracliente() throws Exception {
+    public Compracliente(List lista , ClienteSocket service,List carrito ) throws Exception {
         initComponents();
+        this.list = lista;
+        this.carrito = carrito;
+        this.service = service;
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Ver Catalogo");
               
+//        System.out.println("desde compra "+modelo);
 //        Obtenemos el listado al cargar el frame
-        this.lista = new CatalogoDaoImpl().loadAll();
-        
-//        Creamos un modelo por defecto
         DefaultTableModel modelo = new DefaultTableModel();
         jtDatos.setModel(modelo);
         
-//        Asigmanos el nombre de las columnas que tendra
-        modelo.addColumn("Identificador");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Descripcion");
-        modelo.addColumn("Existencias");
-        modelo.addColumn("imagen");
-        
-//        Recorremos la lista para obtener object de la lista y castear a tipo catalogo por ultimo asigna a la fila los datos
-        for (Object obj : lista)
-        {
-            Catalogo c = (Catalogo)obj;
-            Object o[] = new Object[5];
+            modelo.addColumn("Identificador");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Descripcion");
+            modelo.addColumn("Existencias");
+            modelo.addColumn("imagen");
             
-            o[0] = c.getId();
-            o[1] = c.getNombre();
-            o[2] = c.getDescripcion();
-            o[3] = c.getExitencias();
-            o[4] = c.getImg();
-            
-            modelo.addRow(o);
-            
-//            jtDatos.getse
-        }
+            for (Object obj : list)
+            {
+                Catalogo cc = (Catalogo)obj;
+                Object o[] = new Object[5];
+                
+                o[0] = cc.getId();
+                o[1] = cc.getNombre();
+                o[2] = cc.getDescripcion();
+                o[3] = cc.getExitencias();
+                o[4] = cc.getImg();
+                
+                modelo.addRow(o);
+                
+            }
           
 //        Vamos a ocultar los campos de id y de la imagen para que no los vea el usuario pero nosotros los vamos a usar 
         jtDatos.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -94,12 +101,13 @@ public class Compracliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Imagen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(255, 255, 255)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Imagen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setOpaque(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -162,6 +170,15 @@ public class Compracliente extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 440));
 
         jMenu1.setText("Archivo");
+
+        jMenuItem1.setText("Ver Mi Carrito");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -199,8 +216,127 @@ public class Compracliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jbExitActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        //detectar el agregado
+        
+        int num = jtDatos.getSelectedRow();
+
+        int id = (int)jtDatos.getValueAt(num, 0);
+        String nombre = (String) jtDatos.getValueAt(num, 1);
+        String descripcion = (String)jtDatos.getValueAt(num, 2);
+//        long existencias = 1;
+        byte[] img = (byte[]) jtDatos.getValueAt(num, 4);
+        
+        
+        //Validacion de existencias
+        
+        for (Object obj : list)
+        {
+            
+            Catalogo cc = (Catalogo)obj;
+            if (cc.getId() == id)
+            {
+                if(cc.getExitencias() != 0)
+                {
+                    if (carrito != null)
+                    {
+                        for (Object o : carrito)
+                         {
+                             Catalogo cs = (Catalogo)o;
+                             if(cs.getId() == id )
+                             {
+                                 cs.setExitencias(cs.getExitencias() + 1);
+                                 carrito.remove(cs);
+                                 carrito.add(cs);
+
+                             }
+                         }
+                    }
+                    else{
+                        Catalogo cat = new Catalogo(id, nombre, descripcion, img, 1);
+                        carrito= new LinkedList();
+                        carrito.add(cat);
+                    }
+                    
+//                    ACtualiza la lita
+                    cc.setExitencias(cc.getExitencias() - 1);
+                    list.remove(cc);
+                    list.add(cc);
+                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "No hay mas articulos disponibles  ", "Error ", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+
+        }
+
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        jtDatos.setModel(modelo);
+        
+            modelo.addColumn("Identificador");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Descripcion");
+            modelo.addColumn("Existencias");
+            modelo.addColumn("imagen");
+            
+            for (Object obj : list)
+            {
+                Catalogo cc = (Catalogo)obj;
+                Object o[] = new Object[5];
+                
+                
+                if(cc.getId() == id)
+                {
+//                    System.out.println("cc.getId()");
+                    o[0] = cc.getId();
+                    o[1] = cc.getNombre();
+                    o[2] = cc.getDescripcion();
+                    o[3] = cc.getExitencias();
+                    o[4] = cc.getImg();
+                    
+                    
+                }
+                else
+                {
+                    o[0] = cc.getId();
+                    o[1] = cc.getNombre();
+                    o[2] = cc.getDescripcion();
+                    o[3] = cc.getExitencias();
+                    o[4] = cc.getImg();
+                }
+                
+                
+                modelo.addRow(o);
+                
+            }
+            
+          
+//        Vamos a ocultar los campos de id y de la imagen para que no los vea el usuario pero nosotros los vamos a usar 
+        jtDatos.getColumnModel().getColumn(0).setMaxWidth(0);
+        jtDatos.getColumnModel().getColumn(0).setMinWidth(0);
+        jtDatos.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        jtDatos.getColumnModel().getColumn(4).setMaxWidth(0);
+        jtDatos.getColumnModel().getColumn(4).setMinWidth(0);
+        jtDatos.getColumnModel().getColumn(4).setPreferredWidth(0);
+        
+//        for (Object obj : carrito)
+//         {
+//             Catalogo cs = (Catalogo)obj;
+//             System.out.println(cs.getId());
+//             System.out.println(cs.getNombre());
+//             System.out.println(cs.getExitencias());
+//         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new VerCarrito(carrito,list ,service).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,40 +372,40 @@ public class Compracliente extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-     public static void main(String args[]) {
-      // Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
+//     public static void main(String args[]) {
+//      // Set the Nimbus look and feel */
+////        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+////        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+////         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+////         */
+////        try {
+////            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+////                if ("Nimbus".equals(info.getName())) {
+////                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+////                    break;
+////                }
+////            }
+////        } catch (ClassNotFoundException ex) {
+////            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        } catch (InstantiationException ex) {
+////            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        } catch (IllegalAccessException ex) {
+////            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+////            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+////        }
+////        //</editor-fold>
+//        /* Create and display the form */
+//       java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new Compracliente().setVisible(true);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Compracliente.class.getName()).log(Level.SEVERE, null, ex);
 //                }
 //            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(VerTicket.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-        /* Create and display the form */
-       java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Compracliente().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(Compracliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-   }
+//        });
+//   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -277,6 +413,7 @@ public class Compracliente extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbExit;

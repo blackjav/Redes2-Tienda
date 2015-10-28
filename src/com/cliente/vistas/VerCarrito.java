@@ -5,6 +5,15 @@
  */
 package com.cliente.vistas;
 
+import com.cliente.controlador.ClienteSocket;
+import com.server.modelo.Catalogo;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mariana
@@ -14,8 +23,47 @@ public class VerCarrito extends javax.swing.JFrame {
     /**
      * Creates new form VerCarrito
      */
-    public VerCarrito() {
+    private List carrito;
+    private List list;
+    private ClienteSocket service;
+    
+    public VerCarrito( List carrito,List list , ClienteSocket service) {
         initComponents();
+        this.carrito = carrito;
+        this.list = list;
+        this.service = service;
+           DefaultTableModel modelo = new DefaultTableModel();
+           jtDatos.setModel(modelo);
+            
+            modelo.addColumn("Identificador");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Descripcion");
+            modelo.addColumn("Cantidad");
+            modelo.addColumn("imagen");
+            
+            for (Object obj : carrito)
+            {
+                Catalogo cc = (Catalogo)obj;
+                Object o[] = new Object[5];
+                
+                o[0] = cc.getId();
+                o[1] = cc.getNombre();
+                o[2] = cc.getDescripcion();
+                o[3] = cc.getExitencias();
+                o[4] = cc.getImg();
+                
+                modelo.addRow(o);
+                
+            }
+            
+//        Vamos a ocultar los campos de id y de la imagen para que no los vea el usuario pero nosotros los vamos a usar 
+        jtDatos.getColumnModel().getColumn(0).setMaxWidth(0);
+        jtDatos.getColumnModel().getColumn(0).setMinWidth(0);
+        jtDatos.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        jtDatos.getColumnModel().getColumn(4).setMaxWidth(0);
+        jtDatos.getColumnModel().getColumn(4).setMinWidth(0);
+        jtDatos.getColumnModel().getColumn(4).setPreferredWidth(0);
     }
 
     /**
@@ -33,7 +81,7 @@ public class VerCarrito extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jlIcon = new javax.swing.JLabel();
         jbExit = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jbQuitar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -63,7 +111,12 @@ public class VerCarrito extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 560, 120));
 
         jButton1.setText("Finalizar la Compra ");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, -1, -1));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 190, 70));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3), "Imagen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setOpaque(false);
@@ -95,8 +148,13 @@ public class VerCarrito extends javax.swing.JFrame {
         });
         getContentPane().add(jbExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, -1, -1));
 
-        jButton2.setText("Elegir más Productos");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+        jbQuitar.setText("Quitar");
+        jbQuitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbQuitarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbQuitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
 
         jLabel6.setBackground(new java.awt.Color(51, 51, 51));
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/F0B.jpg"))); // NOI18N
@@ -123,33 +181,105 @@ public class VerCarrito extends javax.swing.JFrame {
         String descripcion = (String)jtDatos.getValueAt(num, 2);
         long existencias = (long)jtDatos.getValueAt(num, 3);
 
-        //        Los agregamos a los textFields
-
-        //        Aqui leemos la imagen y la asigamos jLabel
-        //Image imge = createImage(new ByteArrayImageSource(this.jlIcon));
-        // Obtenemos la escala del jlabel y al final le asignamos el icono.
-        // Image scaledInstance = imge.getScaledInstance(jlIcon.getWidth()-100, jlIcon.getHeight()-100, Image.SCALE_DEFAULT);
-        //ImageIcon imageIcon = new ImageIcon(scaledInstance);
-        //jlIcon.setIcon(imageIcon);
-
-        //        InputStream in = new ByteArrayInputStream(img);
-        //
-        //        try {
-            //            BufferedImage imas = ImageIO.read(in);
-            //            ImageIO.write(imas, "jpg", new File("/home/javier/darksouls.jpg"));
-            ////            Icon icon = null;
-            ////            Graphics2D g2d = imas.createGraphics();
-            ////            icon.paintIcon(null, g2d, 0, 0);
-            //            jlIcon.setIcon((Icon)imas);
-            //        } catch (IOException ex) {
-            //            Logger.getLogger(ViewCatalogo.class.getName()).log(Level.SEVERE, null, ex);
-            //        }
+        
     }//GEN-LAST:event_jtDatosMouseClicked
 
     private void jbExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExitActionPerformed
-        new ClientePrincipal().setVisible(true);
-        this.dispose();
+        
+        try {
+            new Compracliente(list , service,carrito).setVisible(true);
+            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(VerCarrito.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jbExitActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jbQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbQuitarActionPerformed
+        
+        
+        int num = jtDatos.getSelectedRow();
+
+        int id = (int)jtDatos.getValueAt(num, 0);
+        String nombre = (String) jtDatos.getValueAt(num, 1);
+        String descripcion = (String)jtDatos.getValueAt(num, 2);
+//        long existencias = 1;
+        byte[] img = (byte[]) jtDatos.getValueAt(num, 4);
+        
+        
+        //Validacion de existencias
+        
+        for (Object obj : carrito)
+        {
+            
+            Catalogo cc = (Catalogo)obj;
+            
+            if (cc.getId() == id)
+            {
+                if(cc.getExitencias() != 0)
+                {
+                    if (carrito != null)
+                    {
+                        for (Object o : list)
+                         {
+                             Catalogo cs = (Catalogo)o;
+                             if(cs.getId() == id )
+                             {
+                                 cs.setExitencias(cs.getExitencias() + 1);
+                                 list.remove(cs);
+                                 list.add(cs);
+
+                             }
+                         }
+                    }
+                    else{
+                        
+                        JOptionPane.showMessageDialog(this, "No se ha comprado nada :/  ", "Error ", JOptionPane.ERROR_MESSAGE);
+                        
+                    }
+                    
+//                    ACtualiza la lita
+                    cc.setExitencias(cc.getExitencias() - 1);
+                    carrito.remove(cc);
+                    carrito.add(cc);
+                    
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "No hay mas articulos disponibles  ", "Error ", JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
+            }
+
+        }
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        jtDatos.setModel(modelo);
+        modelo.addColumn("Identificador");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Existencias");
+        modelo.addColumn("imagen");
+
+        for (Object obj : list)
+        {
+            Catalogo cc = (Catalogo)obj;
+            Object o[] = new Object[5];
+
+            o[0] = cc.getId();
+            o[1] = cc.getNombre();
+            o[2] = cc.getDescripcion();
+            o[3] = cc.getExitencias();
+            o[4] = cc.getImg();
+
+            modelo.addRow(o);
+
+        }
+    }//GEN-LAST:event_jbQuitarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,7 +318,6 @@ public class VerCarrito extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -196,6 +325,7 @@ public class VerCarrito extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbExit;
+    private javax.swing.JButton jbQuitar;
     private javax.swing.JLabel jlIcon;
     private javax.swing.JTable jtDatos;
     // End of variables declaration//GEN-END:variables

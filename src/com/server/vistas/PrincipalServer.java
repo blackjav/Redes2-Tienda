@@ -215,15 +215,18 @@ public class PrincipalServer extends javax.swing.JFrame {
         {
             try {
                 //            Logica de conexion
-               service = new Servidor(Integer.parseInt(txtPort.getText()));
-               service.start();
-                
+                service = new Servidor(Integer.parseInt(txtPort.getText()));
+                service.start();
+               
+               
+//                  service.send(s);
+
             } catch (Exception ex) {
                 Logger.getLogger(PrincipalServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
-            JOptionPane.showMessageDialog(this, "No se ha ingresado un numero de puerto", "Erro de puerto", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se ha ingresado un numero de puerto " , "Erro de puerto", JOptionPane.ERROR_MESSAGE);
 
         }
     }//GEN-LAST:event_jbConnectActionPerformed
@@ -233,29 +236,29 @@ public class PrincipalServer extends javax.swing.JFrame {
             List lista = new CatalogoDaoImpl().loadAll();
             DefaultTableModel modelo = new DefaultTableModel();
 //            jtDatos.setModel(modelo);
+//            
+//            modelo.addColumn("Identificador");
+//            modelo.addColumn("Nombre");
+//            modelo.addColumn("Descripcion");
+//            modelo.addColumn("Existencias");
+//            modelo.addColumn("imagen");
+//            
+//            for (Object obj : lista)
+//            {
+//                Catalogo cc = (Catalogo)obj;
+//                Object o[] = new Object[5];
+//                
+//                o[0] = cc.getId();
+//                o[1] = cc.getNombre();
+//                o[2] = cc.getDescripcion();
+//                o[3] = cc.getExitencias();
+//                o[4] = cc.getImg();
+//                
+//                modelo.addRow(o);
+//                
+//            }
             
-            modelo.addColumn("Identificador");
-            modelo.addColumn("Nombre");
-            modelo.addColumn("Descripcion");
-            modelo.addColumn("Existencias");
-            modelo.addColumn("imagen");
-            
-            for (Object obj : lista)
-            {
-                Catalogo cc = (Catalogo)obj;
-                Object o[] = new Object[5];
-                
-                o[0] = cc.getId();
-                o[1] = cc.getNombre();
-                o[2] = cc.getDescripcion();
-                o[3] = cc.getExitencias();
-                o[4] = cc.getImg();
-                
-                modelo.addRow(o);
-                
-            }
-            
-            toSend s = new toSend(modelo);
+            toSend s = new toSend(lista);
             service.send(s);
         } catch (Exception ex) {
             Logger.getLogger(PrincipalServer.class.getName()).log(Level.SEVERE, null, ex);
